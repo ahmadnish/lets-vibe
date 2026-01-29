@@ -7,6 +7,15 @@ async function callLLM(systemPrompt, userPrompt, jsonMode = true) {
     throw new Error("OPENAI_API_KEY not configured");
   }
 
+  // Ensure JSON mode prompts contain the word "json"
+  const finalSystemPrompt = jsonMode && !systemPrompt.toLowerCase().includes('json') 
+    ? systemPrompt + "\n\nYou must respond with valid JSON only."
+    : systemPrompt;
+
+  const finalUserPrompt = jsonMode && !userPrompt.toLowerCase().includes('json')
+    ? userPrompt + "\n\nReturn only valid JSON."
+    : userPrompt;
+
   const response = await fetch("https://eu.api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -16,8 +25,8 @@ async function callLLM(systemPrompt, userPrompt, jsonMode = true) {
     body: JSON.stringify({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
+        { role: "system", content: finalSystemPrompt },
+        { role: "user", content: finalUserPrompt },
       ],
       response_format: jsonMode ? { type: "json_object" } : undefined,
       temperature: 0.8,

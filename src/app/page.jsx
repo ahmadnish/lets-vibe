@@ -78,20 +78,24 @@ export default function HomePage() {
 
     // Simulate streaming logs
     const logMessages = [
-      "🚀 Starting project generation...",
-      "🔍 Step 1: Interpreting project requirements...",
-      "✅ Project interpretation complete",
-      "📋 Step 2: Generating tasks and milestones...",
-      "⚡ Creating project structure...",
-      "👥 Step 3: Assigning tasks to contributors...",
-      "🎯 Optimizing task distribution...",
-      "📄 Step 4: Generating project artifacts...",
-      "📝 Creating documentation...",
-      "🌐 Step 5: Setting up Notion workspace...",
-      "📚 Notion page created successfully",
-      "🐙 Step 6: Creating GitHub repository...",
-      "🔧 Setting up repository structure...",
-      "✨ Project generation complete!"
+      "🤖 Starting agentic project generation...",
+      "🧠 Agent Orchestrator analyzing requirements...",
+      "🔍 Step 1: Autonomous project interpretation...",
+      "✅ Project analysis complete",
+      "🔬 Step 2: Conducting autonomous research...",
+      "🌐 Performing web searches (if API key configured)...",
+      "📊 Analyzing market and technical data...",
+      "📋 Step 3: Generating enhanced tasks and milestones...",
+      "⚡ Optimizing for parallel execution...",
+      "👥 Step 4: Intelligent task assignment...",
+      "🎯 Balancing workload and expertise...",
+      "✅ Step 5: Validating project feasibility...",
+      "🚀 Step 6: Applying autonomous enhancements...",
+      "📄 Step 7: Generating comprehensive artifacts...",
+      "📝 Creating enhanced documentation...",
+      "🌐 Step 8: Setting up integrations...",
+      "🐙 Creating enhanced GitHub repository...",
+      "✨ Agentic project generation complete!"
     ];
 
     // Add logs progressively
@@ -319,12 +323,50 @@ export default function HomePage() {
 
           {result && (
             <div className="mt-8 bg-gray-50 rounded-lg p-6">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">✅ Project Generated Successfully!</h3>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                ✅ {result.generation_type === 'agentic' ? '🤖 Agentic' : ''} Project Generated Successfully!
+              </h3>
               <div className="text-lg text-gray-700 mb-4">
                 <strong>Title:</strong> {result.title}
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              {/* Agentic Insights */}
+              {result.agent_insights && (
+                <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-semibold text-blue-800 mb-2">🧠 AI Agent Insights</h4>
+                  <div className="grid md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium text-blue-700">Confidence Score:</span>
+                      <div className="text-2xl font-bold text-blue-800">{result.agent_insights.confidence_score}%</div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-blue-700">Research Performed:</span>
+                      <div className="text-blue-800">
+                        {result.agent_insights.web_search_performed && '🌐 Web Search '}
+                        {result.agent_insights.technical_research_conducted && '🔬 Technical '}
+                        {result.agent_insights.market_analysis_performed && '📊 Market '}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-medium text-blue-700">Enhancement:</span>
+                      <div className="text-blue-800">
+                        {result.agent_insights.enhancement_applied ? '✅ Applied' : '➖ None'}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {result.agent_insights.recommendations && (
+                    <div className="mt-3">
+                      <span className="font-medium text-blue-700">Key Recommendations:</span>
+                      <div className="text-sm text-blue-600 mt-1">
+                        {result.agent_insights.recommendations.key_recommendations?.slice(0, 2).join(', ') || 'Processing...'}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
                 {result.notion_url && (
                   <a
                     href={result.notion_url}
@@ -344,10 +386,25 @@ export default function HomePage() {
                     className="block p-4 bg-white rounded-lg border hover:shadow-md transition-shadow"
                   >
                     <div className="font-medium text-gray-800">🐙 GitHub Repository</div>
-                    <div className="text-sm text-gray-600">Access source code</div>
+                    <div className="text-sm text-gray-600">Access enhanced source code</div>
                   </a>
                 )}
               </div>
+
+              {/* Enhanced Artifacts */}
+              {result.generation_type === 'agentic' && (
+                <div className="mb-6">
+                  <h4 className="font-semibold text-gray-800 mb-3">📚 Enhanced Artifacts Generated</h4>
+                  <div className="grid md:grid-cols-3 gap-2 text-sm">
+                    {result.api_documentation && <span className="px-2 py-1 bg-green-100 text-green-800 rounded">📋 API Docs</span>}
+                    {result.deployment_guide && <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">🚀 Deployment Guide</span>}
+                    {result.testing_strategy && <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded">🧪 Testing Strategy</span>}
+                    {result.code_structure && <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded">🏗️ Architecture</span>}
+                    {result.paper_content && <span className="px-2 py-1 bg-red-100 text-red-800 rounded">📄 Research Paper</span>}
+                    {result.readme_content && <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded">📖 README</span>}
+                  </div>
+                </div>
+              )}
 
               <button
                 onClick={() => {
